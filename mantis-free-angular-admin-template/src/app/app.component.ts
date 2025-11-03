@@ -5,34 +5,74 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet
-  ],
+  imports: [CommonModule, RouterOutlet],
   template: `
-    <div class="sacola-sidebar">
-      <!-- Logo -->
-      <div class="sacola-header">
-        <a href="/inicio" class="sacola-brand">
-          <span class="sacola-logo-text">Sacola Cheia</span>
-        </a>
+    <div class="app-container">
+      <div class="sacola-sidebar">
+        <div class="sacola-header">
+          <a href="/inicio" class="sacola-brand">
+            <span class="sacola-logo-text">Sacola Cheia</span>
+          </a>
+        </div>
+
+        <div class="sacola-menu">
+          <div class="sacola-caption">MENU PRINCIPAL</div>
+          <a href="/inicio" class="sacola-link">
+            <span class="sacola-icon">🏠</span>
+            <span>Início</span>
+          </a>
+
+          <div class="sacola-caption">ORÇAMENTOS</div>
+          <a href="/orcamento/novo" class="sacola-link">
+            <span class="sacola-icon">📝</span>
+            <span>Novo</span>
+          </a>
+          <a href="/orcamento/editar" class="sacola-link">
+            <span class="sacola-icon">✏️</span>
+            <span>Editar</span>
+          </a>
+
+          <div class="sacola-caption">CADASTROS</div>
+          <a href="/cadastros/clientes" class="sacola-link">
+            <span class="sacola-icon">👥</span>
+            <span>Clientes</span>
+          </a>
+          <a href="/cadastros/funcionarios" class="sacola-link">
+            <span class="sacola-icon">👔</span>
+            <span>Funcionários</span>
+          </a>
+          <a href="/cadastros/produtos" class="sacola-link">
+            <span class="sacola-icon">🍎</span>
+            <span>Produtos</span>
+          </a>
+
+          <div class="sacola-caption">RELATÓRIOS</div>
+          <a href="/relatorios/produtos" class="sacola-link">
+            <span class="sacola-icon">📊</span>
+            <span>Produtos</span>
+          </a>
+          <a href="/relatorios/pedidos" class="sacola-link">
+            <span class="sacola-icon">📦</span>
+            <span>Pedidos</span>
+          </a>
+          <a href="/relatorios/clientes" class="sacola-link">
+            <span class="sacola-icon">📋</span>
+            <span>Clientes</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Menu -->
-      <div class="sacola-menu">
-        <div class="sacola-caption">MENU PRINCIPAL</div>
-        <a href="/inicio" class="sacola-link">
-          <span class="sacola-icon">🏠</span>
-          <span>Início</span>
-        </a>
+      <div class="main-content">
+        <router-outlet></router-outlet>
       </div>
-    </div>
-
-    <div class="main-content">
-      <router-outlet></router-outlet>
     </div>
   `,
   styles: [`
+    .app-container {
+      display: flex;
+      height: 100vh;
+    }
+
     .sacola-sidebar {
       position: fixed;
       top: 0;
@@ -40,10 +80,9 @@ import { RouterOutlet } from '@angular/router';
       width: 260px;
       height: 100vh;
       background: #1a4d27;
-      z-index: 9999;
       overflow-y: auto;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
       padding: 1rem;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
     }
 
     .sacola-header {
@@ -64,7 +103,6 @@ import { RouterOutlet } from '@angular/router';
       color: #e8f5e9;
       font-size: 1.3rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
     }
 
     .sacola-menu {
@@ -78,7 +116,6 @@ import { RouterOutlet } from '@angular/router';
       text-transform: uppercase;
       padding: 0.75rem 0.5rem 0.5rem;
       margin-top: 1rem;
-      letter-spacing: 0.5px;
     }
 
     .sacola-link {
@@ -90,7 +127,6 @@ import { RouterOutlet } from '@angular/router';
       border-radius: 8px;
       margin: 0.25rem 0;
       transition: all 0.3s ease;
-      font-size: 0.95rem;
     }
 
     .sacola-link:hover {
@@ -101,25 +137,14 @@ import { RouterOutlet } from '@angular/router';
     .sacola-icon {
       margin-right: 0.75rem;
       font-size: 1.2rem;
-      flex-shrink: 0;
     }
 
     .main-content {
       margin-left: 260px;
       padding: 2rem;
       background: #f5f5f5;
-      min-height: 100vh;
-    }
-
-    @media (max-width: 768px) {
-      .sacola-sidebar {
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-      }
-
-      .main-content {
-        margin-left: 0;
-      }
+      width: calc(100% - 260px);
+      overflow-y: auto;
     }
   `]
 })
