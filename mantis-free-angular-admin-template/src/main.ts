@@ -1,15 +1,16 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
-
-import { environment } from './environments/environment';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { AppRoutingModule } from './app/app-routing.module';
+// src/main.ts - VERSÃO COMPLETA
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { AppComponent } from './app/app.component';
+import { provideHttpClient } from '@angular/common/http';
 
-if (environment.production) {
-  enableProdMode();
-}
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
-  providers: [importProvidersFrom(BrowserModule, AppRoutingModule), provideAnimations()]
-}).catch((err) => console.error(err));
+  providers: [
+    provideRouter(routes),
+    provideAnimations(),
+    provideHttpClient()
+  ]
+}).catch(err => console.error(err));

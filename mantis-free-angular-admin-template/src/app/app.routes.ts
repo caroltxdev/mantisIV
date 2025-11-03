@@ -1,40 +1,37 @@
-// app.routes.ts
 import { Routes } from '@angular/router';
 
-// Importe os componentes
-import { InicioComponent } from './pages/inicio/inicio.component';
-import { NovoOrcamentoComponent } from './pages/orcamento/novo-orcamento/novo-orcamento.component';
-import { EditarOrcamentoComponent } from './pages/orcamento/editar-orcamento/editar-orcamento.component';
-import { TaxaEntregaComponent } from './pages/orcamento/taxa-entrega/taxa-entrega.component';
-import { PedidosComponent } from './pages/pedidos/pedidos.component';
-import { ClientesComponent } from './pages/cadastros/clientes/clientes.component';
-import { FuncionariosComponent } from './pages/cadastros/funcionarios/funcionarios.component';
-import { ProdutosComponent } from './pages/cadastros/produtos/produtos.component';
-import { RelatorioProdutosComponent } from './pages/relatorios/relatorio-produtos/relatorio-produtos.component';
-import { RelatorioPedidosComponent } from './pages/relatorios/relatorio-pedidos/relatorio-pedidos.component';
-import { RelatorioClientesComponent } from './pages/relatorios/relatorio-clientes/relatorio-clientes.component';
-
 export const routes: Routes = [
-  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   
-  // Menu Principal
-  { path: 'inicio', component: InicioComponent },
+  { path: 'inicio', loadComponent: () => 
+    import('./pages/inicio/inicio.component').then(m => m.InicioComponent) 
+  },
   
-  // Orçamentos
-  { path: 'orcamento/novo', component: NovoOrcamentoComponent },
-  { path: 'orcamento/editar', component: EditarOrcamentoComponent },
-  { path: 'orcamento/taxa-entrega', component: TaxaEntregaComponent },
+  { path: 'orcamento/novo', loadComponent: () => 
+    import('./pages/orcamento/novo-orcamento/novo-orcamento.component').then(m => m.NovoOrcamento) 
+  },
   
-  // Pedidos
-  { path: 'pedidos', component: PedidosComponent },
+  { path: 'orcamento/editar', loadComponent: () => 
+    import('./pages/orcamento/editar-orcamento/editar-orcamento.component').then(m => m.EditarOrcamento) 
+  },
   
-  // Cadastros
-  { path: 'cadastros/clientes', component: ClientesComponent },
-  { path: 'cadastros/funcionarios', component: FuncionariosComponent },
-  { path: 'cadastros/produtos', component: ProdutosComponent },
+  { path: 'orcamento/taxa-entrega', loadComponent: () => 
+    import('./pages/orcamento/taxa-entrega/taxa-entrega.component').then(m => m.TaxaEntrega) 
+  },
   
-  // Relatórios
-  { path: 'relatorios/produtos', component: RelatorioProdutosComponent },
-  { path: 'relatorios/pedidos', component: RelatorioPedidosComponent },
-  { path: 'relatorios/clientes', component: RelatorioClientesComponent }
+  { path: 'pedidos', loadComponent: () => 
+    import('./pages/pedidos/pedidos.component').then(m => m.Pedidos) 
+  },
+  
+  { path: 'relatorios/produtos', loadComponent: () => 
+    import('./pages/relatorios/relatorio-produtos/relatorio-produtos.component').then(m => m.RelatorioProdutos) 
+  },
+  
+  { path: 'relatorios/pedidos', loadComponent: () => 
+    import('./pages/relatorios/relatorio-pedidos/relatorio-pedidos.component').then(m => m.RelatorioPedidos) 
+  },
+  
+  { path: 'relatorios/clientes', loadComponent: () => 
+    import('./pages/relatorios/relatorio-clientes/relatorio-clientes.component').then(m => m.RelatorioClientes) 
+  }
 ];
