@@ -1,1 +1,293 @@
-<p>novo-orcamento works!</p>
+<div class="orcamento-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>📋 Novo Orçamento</h1>
+      <p class="subtitle">Preencha os dados abaixo para criar um novo orçamento</p>
+    </div>
+  </div>
+
+  <!-- Form Container -->
+  <div class="form-container">
+    <form [formGroup]="orcamentoForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Seção 1: Informações do Cliente -->
+      <div class="form-section">
+        <h2>👤 Informações do Cliente</h2>
+        
+        <div class="form-group">
+          <label for="cliente">Cliente *</label>
+          <select id="cliente" formControlName="cliente" class="form-control" (change)="onClienteChange($event)">
+            <option value="" disabled>Selecione um cliente</option>
+            <option value="1">João Silva - CNPJ: 12.345.678/0001-90</option>
+            <option value="2">Maria Santos - CNPJ: 98.765.432/0001-10</option>
+            <option value="3">Pedro Oliveira - CNPJ: 55.555.555/0001-55</option>
+            <option value="4">Novo Cliente</option>
+          </select>
+          <small class="form-text">Selecione um cliente ou crie um novo</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nomeCliente">Nome/Empresa *</label>
+            <input 
+              type="text" 
+              id="nomeCliente" 
+              formControlName="nomeCliente" 
+              class="form-control"
+              placeholder="Nome da empresa"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="cnpjCpf">CNPJ/CPF *</label>
+            <input 
+              type="text" 
+              id="cnpjCpf" 
+              formControlName="cnpjCpf" 
+              class="form-control"
+              placeholder="00.000.000/0000-00"
+            >
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              class="form-control"
+              placeholder="email@exemplo.com"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input 
+              type="tel" 
+              id="telefone" 
+              formControlName="telefone" 
+              class="form-control"
+              placeholder="(11) 9999-9999"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção 2: Informações do Orçamento -->
+      <div class="form-section">
+        <h2>📝 Informações do Orçamento</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="numeroOrcamento">Número do Orçamento</label>
+            <input 
+              type="text" 
+              id="numeroOrcamento" 
+              formControlName="numeroOrcamento" 
+              class="form-control"
+              placeholder="AUTO-001"
+            >
+            <small class="form-text">Gerado automaticamente</small>
+          </div>
+
+          <div class="form-group">
+            <label for="dataOrcamento">Data *</label>
+            <input 
+              type="date" 
+              id="dataOrcamento" 
+              formControlName="dataOrcamento" 
+              class="form-control"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="dataValidade">Data de Validade *</label>
+            <input 
+              type="date" 
+              id="dataValidade" 
+              formControlName="dataValidade" 
+              class="form-control"
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="observacoes">Observações</label>
+          <textarea 
+            id="observacoes" 
+            formControlName="observacoes" 
+            class="form-control"
+            rows="3"
+            placeholder="Adicione observações importantes sobre o orçamento"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Seção 3: Itens do Orçamento -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>📦 Itens do Orçamento</h2>
+          <button type="button" class="btn-secondary" (click)="adicionarItem()">
+            ➕ Adicionar Item
+          </button>
+        </div>
+
+        <div class="items-table">
+          <div class="table-header">
+            <div class="col-produto">Produto/Serviço</div>
+            <div class="col-quantidade">Quantidade</div>
+            <div class="col-valor">Valor Unit.</div>
+            <div class="col-subtotal">Subtotal</div>
+            <div class="col-acoes">Ação</div>
+          </div>
+
+          <div formArrayName="itens" class="table-body">
+            <div *ngFor="let item of itens.controls; let i = index" [formGroupName]="i" class="table-row">
+              <div class="col-produto">
+                <select formControlName="produto" class="form-control-inline" (change)="calcularSubtotal()">
+                  <option value="" disabled>Selecione</option>
+                  <option value="1">Tomate Premium - kg</option>
+                  <option value="2">Alface Crespa - unid</option>
+                  <option value="3">Cenoura - kg</option>
+                  <option value="4">Abóbora - kg</option>
+                  <option value="5">Cebola - kg</option>
+                </select>
+              </div>
+              <div class="col-quantidade">
+                <input 
+                  type="number" 
+                  formControlName="quantidade" 
+                  class="form-control-inline"
+                  min="0.1"
+                  step="0.1"
+                  (change)="calcularSubtotal()"
+                  placeholder="0"
+                >
+              </div>
+              <div class="col-valor">
+                <input 
+                  type="number" 
+                  formControlName="valorUnitario" 
+                  class="form-control-inline"
+                  min="0"
+                  step="0.01"
+                  (change)="calcularSubtotal()"
+                  placeholder="0,00"
+                >
+              </div>
+              <div class="col-subtotal">
+                <span class="valor-subtotal">{{ calcularSubtotalItem(i) | currency: 'BRL' }}</span>
+              </div>
+              <div class="col-acoes">
+                <button type="button" class="btn-remove" (click)="removerItem(i)" title="Remover item">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="itens.length === 0" class="empty-state">
+          <p>Nenhum item adicionado. Clique em "Adicionar Item" para começar.</p>
+        </div>
+      </div>
+
+      <!-- Seção 4: Resumo Financeiro -->
+      <div class="form-section">
+        <div class="resumo-financeiro">
+          <div class="resumo-item">
+            <span class="label">Subtotal</span>
+            <span class="valor">{{ calcularSubtotal() | currency: 'BRL' }}</span>
+          </div>
+
+          <div class="resumo-item">
+            <label for="desconto" class="label">Desconto (%)</label>
+            <div class="input-desconto">
+              <input 
+                type="number" 
+                id="desconto" 
+                formControlName="desconto" 
+                class="form-control-inline"
+                min="0"
+                max="100"
+                step="0.1"
+                (change)="calcularTotal()"
+              >
+              <span class="valor-desconto">- {{ calcularValorDesconto() | currency: 'BRL' }}</span>
+            </div>
+          </div>
+
+          <div class="resumo-item">
+            <label for="imposto" class="label">Imposto (%)</label>
+            <div class="input-imposto">
+              <input 
+                type="number" 
+                id="imposto" 
+                formControlName="imposto" 
+                class="form-control-inline"
+                min="0"
+                max="100"
+                step="0.1"
+                (change)="calcularTotal()"
+              >
+              <span class="valor-imposto">+ {{ calcularValorImposto() | currency: 'BRL' }}</span>
+            </div>
+          </div>
+
+          <div class="resumo-item total">
+            <span class="label">TOTAL</span>
+            <span class="valor-total">{{ calcularTotalFinal() | currency: 'BRL' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção 5: Condições e Ações -->
+      <div class="form-section">
+        <h2>✅ Condições de Pagamento</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="condicaoPagamento">Condição de Pagamento *</label>
+            <select id="condicaoPagamento" formControlName="condicaoPagamento" class="form-control">
+              <option value="">Selecione</option>
+              <option value="vista">À Vista</option>
+              <option value="14dias">14 dias</option>
+              <option value="30dias">30 dias</option>
+              <option value="60dias">60 dias</option>
+              <option value="90dias">90 dias</option>
+              <option value="parcelado">Parcelado</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="formaPagamento">Forma de Pagamento *</label>
+            <select id="formaPagamento" formControlName="formaPagamento" class="form-control">
+              <option value="">Selecione</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="transferencia">Transferência Bancária</option>
+              <option value="cartao">Cartão de Crédito</option>
+              <option value="pix">PIX</option>
+              <option value="boleto">Boleto</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="onCancel()">
+          ← Voltar
+        </button>
+        <button type="button" class="btn-tertiary" (click)="onSaveDraft()">
+          💾 Salvar como Rascunho
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="!orcamentoForm.valid || itens.length === 0">
+          ✓ Gerar Orçamento
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

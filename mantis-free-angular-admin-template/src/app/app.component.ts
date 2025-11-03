@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
   template: `
-    <div class="app-container">
+    <div class="app-container" *ngIf="!isLoginPage">
       <div class="sacola-sidebar">
         <div class="sacola-header">
           <a href="/inicio" class="sacola-brand">
@@ -60,11 +61,22 @@ import { RouterOutlet } from '@angular/router';
             <span>Clientes</span>
           </a>
         </div>
+
+        <div class="sacola-footer">
+          <button (click)="logout()" class="btn-logout">
+            <span class="logout-icon">🚪</span>
+            Sair
+          </button>
+        </div>
       </div>
 
       <div class="main-content">
         <router-outlet></router-outlet>
       </div>
+    </div>
+
+    <div *ngIf="isLoginPage" class="login-only">
+      <router-outlet></router-outlet>
     </div>
   `,
   styles: [`
@@ -83,6 +95,8 @@ import { RouterOutlet } from '@angular/router';
       overflow-y: auto;
       padding: 1rem;
       box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
     }
 
     .sacola-header {
@@ -107,6 +121,8 @@ import { RouterOutlet } from '@angular/router';
 
     .sacola-menu {
       padding: 1rem 0;
+      flex: 1;
+      overflow-y: auto;
     }
 
     .sacola-caption {
@@ -139,6 +155,37 @@ import { RouterOutlet } from '@angular/router';
       font-size: 1.2rem;
     }
 
+    .sacola-footer {
+      padding-top: 1rem;
+      border-top: 1px solid rgba(82, 199, 107, 0.3);
+      margin-top: auto;
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 0.75rem;
+      background: #e53935;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      background: #c62828;
+      transform: scale(1.05);
+    }
+
+    .logout-icon {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+
     .main-content {
       margin-left: 260px;
       padding: 2rem;
@@ -146,8 +193,30 @@ import { RouterOutlet } from '@angular/router';
       width: calc(100% - 260px);
       overflow-y: auto;
     }
+
+    .login-only {
+      width: 100%;
+      height: 100vh;
+    }
   `]
 })
 export class AppComponent {
+  isLoginPage = false;
+  private router = inject(Router);
+
+  constructor() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.isLoginPage = event.url === '/login' || event.url === '/';
+      });
+  }
+
+  logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('user_email');
+    this.router.navigate(['/login']);
+  }
+
   title = 'Sacola Cheia';
 }

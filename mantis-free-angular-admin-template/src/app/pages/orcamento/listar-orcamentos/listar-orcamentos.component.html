@@ -1,0 +1,218 @@
+<div class="orcamentos-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>📋 Gerenciar Orçamentos</h1>
+      <p class="subtitle">Selecione um orçamento para editar, visualizar ou deletar</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary" routerLink="/orcamento/novo">
+        ➕ Novo Orçamento
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtros e Busca -->
+  <div class="filtros-container">
+    <div class="filtro-grupo">
+      <input 
+        type="text" 
+        placeholder="🔍 Buscar por cliente, número..." 
+        [(ngModel)]="filtro.busca"
+        (ngModelChange)="aplicarFiltros()"
+        class="input-busca"
+      >
+    </div>
+
+    <div class="filtro-grupo">
+      <label>Status:</label>
+      <select [(ngModel)]="filtro.status" (ngModelChange)="aplicarFiltros()" class="select-filtro">
+        <option value="">Todos</option>
+        <option value="rascunho">Rascunho</option>
+        <option value="enviado">Enviado</option>
+        <option value="pendente">Pendente</option>
+        <option value="aprovado">Aprovado</option>
+        <option value="recusado">Recusado</option>
+      </select>
+    </div>
+
+    <div class="filtro-grupo">
+      <label>Ordenar por:</label>
+      <select [(ngModel)]="filtro.ordenar" (ngModelChange)="aplicarFiltros()" class="select-filtro">
+        <option value="data-desc">Data (Mais recente)</option>
+        <option value="data-asc">Data (Mais antigo)</option>
+        <option value="valor-desc">Valor (Maior)</option>
+        <option value="valor-asc">Valor (Menor)</option>
+        <option value="cliente">Cliente (A-Z)</option>
+      </select>
+    </div>
+
+    <button class="btn-reset" (click)="limparFiltros()">Limpar Filtros</button>
+  </div>
+
+  <!-- Tabs de Visualização -->
+  <div class="tabs-container">
+    <button 
+      class="tab" 
+      [class.active]="visualizacao === 'cards'"
+      (click)="visualizacao = 'cards'"
+    >
+      📊 Cards
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="visualizacao === 'tabela'"
+      (click)="visualizacao = 'tabela'"
+    >
+      📑 Tabela
+    </button>
+  </div>
+
+  <!-- Visualização em Cards -->
+  <div *ngIf="visualizacao === 'cards'" class="orcamentos-cards">
+    <div *ngFor="let orcamento of orcamentosFiltrados" class="card-orcamento">
+      <div class="card-header">
+        <div class="info-header">
+          <h3>{{ orcamento.numeroOrcamento }}</h3>
+          <span class="badge" [ngClass]="'status-' + orcamento.status">
+            {{ orcamento.status | uppercase }}
+          </span>
+        </div>
+        <span class="valor-card">{{ orcamento.total | currency: 'BRL' }}</span>
+      </div>
+
+      <div class="card-body">
+        <div class="info-item">
+          <span class="label">Cliente:</span>
+          <span class="valor">{{ orcamento.nomeCliente }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Data:</span>
+          <span class="valor">{{ orcamento.dataOrcamento | date: 'dd/MM/yyyy' }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Validade:</span>
+          <span class="valor" [class.expirado]="orcamento.expirado">
+            {{ orcamento.dataValidade | date: 'dd/MM/yyyy' }}
+            <span *ngIf="orcamento.expirado" class="aviso-expirado">⚠️ Expirado</span>
+          </span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Itens:</span>
+          <span class="valor">{{ orcamento.itens }} item(ns)</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button 
+          class="btn-card btn-visualizar" 
+          [routerLink]="['/orcamento/visualizar', orcamento.id]"
+          title="Visualizar"
+        >
+          👁️ Ver
+        </button>
+        <button 
+          class="btn-card btn-editar" 
+          [routerLink]="['/orcamento/editar', orcamento.id]"
+          title="Editar"
+        >
+          ✏️ Editar
+        </button>
+        <button 
+          class="btn-card btn-deletar" 
+          (click)="confirmarDelecao(orcamento.id, orcamento.numeroOrcamento)"
+          title="Deletar"
+        >
+          🗑️ Delete
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="orcamentosFiltrados.length === 0" class="empty-state">
+      <p>😴 Nenhum orçamento encontrado com os filtros aplicados.</p>
+      <button class="btn-primary" routerLink="/orcamento/novo">
+        Criar novo orçamento
+      </button>
+    </div>
+  </div>
+
+  <!-- Visualização em Tabela -->
+  <div *ngIf="visualizacao === 'tabela'" class="orcamentos-tabela">
+    <div class="table-container">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Número</th>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Validade</th>
+            <th>Itens</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let orcamento of orcamentosFiltrados" class="table-row">
+            <td class="numero-col">{{ orcamento.numeroOrcamento }}</td>
+            <td class="cliente-col">{{ orcamento.nomeCliente }}</td>
+            <td class="data-col">{{ orcamento.dataOrcamento | date: 'dd/MM/yyyy' }}</td>
+            <td class="data-col" [class.expirado]="orcamento.expirado">
+              {{ orcamento.dataValidade | date: 'dd/MM/yyyy' }}
+            </td>
+            <td class="itens-col">{{ orcamento.itens }}</td>
+            <td class="valor-col">{{ orcamento.total | currency: 'BRL' }}</td>
+            <td class="status-col">
+              <span class="badge" [ngClass]="'status-' + orcamento.status">
+                {{ orcamento.status }}
+              </span>
+            </td>
+            <td class="acoes-col">
+              <button 
+                class="btn-tabela btn-visualizar" 
+                [routerLink]="['/orcamento/visualizar', orcamento.id]"
+                title="Visualizar"
+              >
+                👁️
+              </button>
+              <button 
+                class="btn-tabela btn-editar" 
+                [routerLink]="['/orcamento/editar', orcamento.id]"
+                title="Editar"
+              >
+                ✏️
+              </button>
+              <button 
+                class="btn-tabela btn-deletar" 
+                (click)="confirmarDelecao(orcamento.id, orcamento.numeroOrcamento)"
+                title="Deletar"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="orcamentosFiltrados.length === 0" class="empty-state">
+      <p>😴 Nenhum orçamento encontrado com os filtros aplicados.</p>
+    </div>
+  </div>
+
+  <!-- Paginação (opcional) -->
+  <div *ngIf="orcamentosFiltrados.length > 0" class="paginacao">
+    <button [disabled]="paginaAtual === 1" (click)="paginaAtual = paginaAtual - 1" class="btn-paginacao">
+      ← Anterior
+    </button>
+    <span class="info-paginacao">
+      Página {{ paginaAtual }} de {{ totalPaginas }}
+    </span>
+    <button [disabled]="paginaAtual === totalPaginas" (click)="paginaAtual = paginaAtual + 1" class="btn-paginacao">
+      Próxima →
+    </button>
+  </div>
+</div>

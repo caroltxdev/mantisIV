@@ -1,0 +1,377 @@
+.orcamento-container {
+  padding: 2rem;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #1a4d27 0%, #2d7f47 100%);
+  color: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.form-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.form-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-section h2 {
+  margin: 0 0 1.5rem;
+  font-size: 1.3rem;
+  color: #1a4d27;
+  border-bottom: 2px solid #1a4d27;
+  padding-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.form-control,
+.form-control-inline {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-control-inline:focus {
+  outline: none;
+  border-color: #1a4d27;
+  box-shadow: 0 0 0 3px rgba(26, 77, 39, 0.1);
+}
+
+.form-control:disabled {
+  background: #f5f5f5;
+  color: #999;
+}
+
+textarea.form-control {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-text {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* Tabela de Itens */
+.items-table {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+  gap: 1rem;
+  background: #f5f5f5;
+  padding: 1rem;
+  font-weight: 600;
+  color: #1a4d27;
+  border-bottom: 2px solid #ddd;
+}
+
+.table-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row:hover {
+  background: #fafafa;
+}
+
+.col-produto,
+.col-quantidade,
+.col-valor,
+.col-subtotal,
+.col-acoes {
+  display: flex;
+  align-items: center;
+}
+
+.form-control-inline {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.valor-subtotal {
+  font-weight: 600;
+  color: #1a4d27;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-remove:hover {
+  transform: scale(1.2);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+/* Resumo Financeiro */
+.resumo-financeiro {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 2px solid #1a4d27;
+}
+
+.resumo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.resumo-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.resumo-item .label {
+  font-weight: 600;
+  color: #333;
+}
+
+.resumo-item .valor {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a4d27;
+}
+
+.input-desconto,
+.input-imposto {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input-desconto input,
+.input-imposto input {
+  width: 80px;
+}
+
+.valor-desconto,
+.valor-imposto {
+  font-weight: 600;
+  min-width: 120px;
+  text-align: right;
+}
+
+.valor-desconto {
+  color: #4caf50;
+}
+
+.valor-imposto {
+  color: #ff9800;
+}
+
+.resumo-item.total {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 2px solid #1a4d27;
+  margin-top: 1rem;
+  font-size: 1.3rem;
+}
+
+.valor-total {
+  color: #1a4d27;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Botões */
+.btn-secondary,
+.btn-tertiary,
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+.btn-tertiary {
+  background: #0056b3;
+  color: white;
+}
+
+.btn-tertiary:hover {
+  background: #004085;
+}
+
+.btn-primary {
+  background: #1a4d27;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2d7f47;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 77, 39, 0.3);
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .orcamento-container {
+    padding: 1rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+  }
+
+  .col-produto::before {
+    content: "Produto: ";
+    font-weight: 600;
+  }
+
+  .col-quantidade::before {
+    content: "Qtd: ";
+    font-weight: 600;
+  }
+
+  .col-valor::before {
+    content: "Valor: ";
+    font-weight: 600;
+  }
+
+  .col-subtotal::before {
+    content: "Subtotal: ";
+    font-weight: 600;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn-secondary,
+  .btn-tertiary,
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}

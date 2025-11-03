@@ -12,16 +12,26 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  { path: 'orcamento/novo', loadComponent: () => 
-    import('./pages/orcamento/novo-orcamento/novo-orcamento.component').then(m => m.NovoOrcamento),
-    canActivate: [authGuard]
-  },
+  {
+  path: 'orcamento/novo',
+  loadComponent: () => import('./pages/orcamento/novo-orcamento/novo-orcamento.component')
+    .then(m => m.NovoOrcamentoComponent),
+  canActivate: [authGuard]
+},
+{
+  path: 'orcamento/editar/:id',  // ← COM ID
+  loadComponent: () => import('./pages/orcamento/editar-orcamento/editar-orcamento.component')
+    .then(m => m.EditarOrcamentoComponent),
+  canActivate: [authGuard]
+},
+{
+  path: 'orcamentos',
+  loadComponent: () =>
+    import('./pages/orcamento/listar-orcamentos/listar-orcamentos.component')
+      .then(m => m.ListarOrcamentosComponent),
+  canActivate: [authGuard]
 
-  { path: 'orcamento/editar', loadComponent: () => 
-    import('./pages/orcamento/editar-orcamento/editar-orcamento.component').then(m => m.EditarOrcamento),
-    canActivate: [authGuard]
-  },
-
+},
   { path: 'orcamento/taxa-entrega', loadComponent: () => 
     import('./pages/orcamento/taxa-entrega/taxa-entrega.component').then(m => m.TaxaEntrega),
     canActivate: [authGuard]
@@ -42,8 +52,4 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  { path: 'relatorios/clientes', loadComponent: () => 
-    import('./pages/relatorios/relatorio-clientes/relatorio-clientes.component').then(m => m.RelatorioClientes),
-    canActivate: [authGuard]
-  }
 ];

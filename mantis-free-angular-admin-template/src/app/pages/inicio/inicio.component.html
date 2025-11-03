@@ -1,1 +1,158 @@
-<p>inicio works!</p>
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>📊 Bem-vindo ao Sacola Cheia</h1>
+      <p class="subtitle">Gerencie seus orçamentos e acompanhe seu negócio</p>
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <div class="action-section">
+    <button class="btn-primary" routerLink="/cadastros/orçamentos">
+      <span class="icon">➕</span>
+      Novo Orçamento
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-grid">
+    
+    <!-- Card 1: Resumo de Orçamentos -->
+    <div class="card">
+      <div class="card-header">
+        <h2>💰 Orçamentos</h2>
+      </div>
+      <div class="card-body">
+        <div class="stat-item">
+          <span class="stat-label">Total de Orçamentos</span>
+          <span class="stat-value">12</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Orçamentos Pendentes</span>
+          <span class="stat-value pending">5</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Orçamentos Aprovados</span>
+          <span class="stat-value approved">7</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-link">Ver todos os orçamentos →</a>
+      </div>
+    </div>
+
+    <!-- Card 2: Resumo de Vendas -->
+    <div class="card">
+      <div class="card-header">
+        <h2>📈 Vendas</h2>
+      </div>
+      <div class="card-body">
+        <div class="stat-item">
+          <span class="stat-label">Receita Total</span>
+          <span class="stat-value">R$ 45.320,00</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Este Mês</span>
+          <span class="stat-value">R$ 12.150,00</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress" style="width: 65%"></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-link">Ver relatório completo →</a>
+      </div>
+    </div>
+
+    <!-- Card 3: Clientes -->
+    <div class="card">
+      <div class="card-header">
+        <h2>👥 Clientes</h2>
+      </div>
+      <div class="card-body">
+        <div class="stat-item">
+          <span class="stat-label">Total de Clientes</span>
+          <span class="stat-value">28</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Novos Este Mês</span>
+          <span class="stat-value">3</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Clientes Ativos</span>
+          <span class="stat-value">24</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-link">Gerenciar clientes →</a>
+      </div>
+    </div>
+
+    <!-- Card 4: Produtos/Serviços -->
+    <div class="card">
+      <div class="card-header">
+        <h2>📦 Produtos</h2>
+      </div>
+      <div class="card-body">
+        <div class="stat-item">
+          <span class="stat-label">Total de Produtos</span>
+          <span class="stat-value">45</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Em Estoque</span>
+          <span class="stat-value">42</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Fora de Estoque</span>
+          <span class="stat-value warning">3</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-link">Ver catálogo →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Charts Section (opcional) -->
+  <div class="charts-section">
+    <div class="chart-container">
+      <h3>Orçamentos por Status</h3>
+      <div class="chart-placeholder">
+        <!-- Aqui você pode adicionar gráficos com ng-apexcharts ou chart.js -->
+        <p>Gráfico de orçamentos por status</p>
+      </div>
+    </div>
+    <div class="chart-container">
+      <h3>Receita por Mês</h3>
+      <div class="chart-placeholder">
+        <p>Gráfico de receita mensal</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <h3>📝 Atividade Recente</h3>
+    <div class="activity-list">
+      <div class="activity-item">
+        <span class="activity-time">Hoje, 14:30</span>
+        <span class="activity-text">Orçamento #001 aprovado por João Silva</span>
+      </div>
+      <div class="activity-item">
+        <span class="activity-time">Hoje, 10:15</span>
+        <span class="activity-text">Novo cliente registrado: Maria Santos</span>
+      </div>
+      <div class="activity-item">
+        <span class="activity-time">Ontem, 16:45</span>
+        <span class="activity-text">Produto "Tomate" adicionado ao catálogo</span>
+      </div>
+      <div class="activity-item">
+        <span class="activity-time">Ontem, 09:20</span>
+        <span class="activity-text">Orçamento #002 enviado para cliente</span>
+      </div>
+    </div>
+  </div>
+
+</div>

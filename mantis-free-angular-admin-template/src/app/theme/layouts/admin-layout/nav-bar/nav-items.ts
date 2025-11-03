@@ -37,11 +37,11 @@ export const NavItems: NavItem[] = [
         url: '/orcamento/novo'
       },
       {
-        id: 'editar-orcamento',
-        title: 'Editar Orçamento',
+        id: 'listar-orcamento',
+        title: 'Gerenciar Orçamentos',
         type: 'item',
         icon: 'edit',
-        url: '/orcamento/editar'
+        url: '/orcamentos'
       },
       {
         id: 'taxa-entrega',
