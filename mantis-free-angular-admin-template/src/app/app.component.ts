@@ -1,62 +1,62 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive], // Adicione RouterLink e RouterLinkActive
   template: `
     <div class="app-container" *ngIf="!isLoginPage">
       <div class="sacola-sidebar">
         <div class="sacola-header">
-          <a href="/inicio" class="sacola-brand">
+          <a routerLink="/inicio" class="sacola-brand">
             <span class="sacola-logo-text">Sacola Cheia</span>
           </a>
         </div>
 
         <div class="sacola-menu">
           <div class="sacola-caption">MENU PRINCIPAL</div>
-          <a href="/inicio" class="sacola-link">
+          <a routerLink="/inicio" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">🏠</span>
             <span>Início</span>
           </a>
 
           <div class="sacola-caption">ORÇAMENTOS</div>
-          <a href="/orcamento/novo" class="sacola-link">
+          <a routerLink="/orcamento/novo" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">📝</span>
             <span>Novo</span>
           </a>
-          <a href="/orcamento/editar" class="sacola-link">
-            <span class="sacola-icon">✏️</span>
-            <span>Editar</span>
+          <a routerLink="/orcamentos" routerLinkActive="active" class="sacola-link">
+            <span class="sacola-icon">💰</span>
+            <span>Gerenciar</span>
           </a>
 
           <div class="sacola-caption">CADASTROS</div>
-          <a href="/cadastros/clientes" class="sacola-link">
+          <a routerLink="/cadastros/clientes" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">👥</span>
             <span>Clientes</span>
           </a>
-          <a href="/cadastros/funcionarios" class="sacola-link">
+          <a routerLink="/cadastros/funcionarios" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">👔</span>
             <span>Funcionários</span>
           </a>
-          <a href="/cadastros/produtos" class="sacola-link">
+          <a routerLink="/cadastros/produtos" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">🍎</span>
             <span>Produtos</span>
           </a>
 
           <div class="sacola-caption">RELATÓRIOS</div>
-          <a href="/relatorios/produtos" class="sacola-link">
+          <a routerLink="/relatorios/produtos" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">📊</span>
             <span>Produtos</span>
           </a>
-          <a href="/relatorios/pedidos" class="sacola-link">
+          <a routerLink="/relatorios/pedidos" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">📦</span>
             <span>Pedidos</span>
           </a>
-          <a href="/relatorios/clientes" class="sacola-link">
+          <a routerLink="/relatorios/clientes" routerLinkActive="active" class="sacola-link">
             <span class="sacola-icon">📋</span>
             <span>Clientes</span>
           </a>
@@ -111,6 +111,7 @@ import { filter } from 'rxjs/operators';
       display: flex;
       align-items: center;
       text-decoration: none;
+      cursor: pointer;
     }
 
     .sacola-logo-text {
@@ -143,11 +144,18 @@ import { filter } from 'rxjs/operators';
       border-radius: 8px;
       margin: 0.25rem 0;
       transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     .sacola-link:hover {
       background: rgba(82, 199, 107, 0.15);
       transform: translateX(5px);
+    }
+
+    .sacola-link.active {
+      background: rgba(82, 199, 107, 0.25);
+      border-left: 4px solid #52c76b;
+      font-weight: 600;
     }
 
     .sacola-icon {
@@ -192,6 +200,7 @@ import { filter } from 'rxjs/operators';
       background: #f5f5f5;
       width: calc(100% - 260px);
       overflow-y: auto;
+      min-height: 100vh;
     }
 
     .login-only {

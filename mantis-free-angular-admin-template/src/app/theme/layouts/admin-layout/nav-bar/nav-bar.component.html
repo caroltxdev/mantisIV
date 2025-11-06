@@ -1,9 +1,9 @@
-<!-- nav-bar.component.html - VERSÃO FINAL LIMPA -->
+<!-- nav-bar.component.html - VERSÃO CORRIGIDA -->
 <div class="sacola-sidebar">
   
   <!-- Logo -->
   <div class="sacola-header">
-    <a href="/inicio" class="sacola-brand">
+    <a routerLink="/inicio" class="sacola-brand">
       <img 
         src="/assets/images/logoPNG.png" 
         alt="Sacola Cheia" 
@@ -18,60 +18,58 @@
     
     <!-- Menu Principal -->
     <div class="sacola-caption">MENU PRINCIPAL</div>
-    <a href="/inicio" class="sacola-link">
+    <a routerLink="/inicio" routerLinkActive="active" class="sacola-link">
       <span class="sacola-icon">🏠</span>
       <span>Início</span>
     </a>
 
-   <!-- ORÇAMENTOS -->
-  <div class="sacola-caption">ORÇAMENTOS</div>
-  <a href="/orcamento/novo" class="sacola-link">
-    <span class="sacola-icon">➕</span>
-    <span>Novo Orçamento</span>
-  </a>
-  <a href="/orcamentos" class="sacola-link">
-    <span class="sacola-icon">💰</span>
-    <span>Gerenciar Orçamentos</span>
-  </a>
-  <a href="/orcamento/taxa-entrega" class="sacola-link">
-    <span class="sacola-icon">🚚</span>
-    <span>Taxa de Entrega</span>
-  </a>
-  <a href="/pedidos" class="sacola-link">
-    <span class="sacola-icon">🛒</span>
-    <span>Pedidos</span>
-  </a>
-
+    <!-- ORÇAMENTOS -->
+    <div class="sacola-caption">ORÇAMENTOS</div>
+    <a routerLink="/orcamento/novo" routerLinkActive="active" class="sacola-link">
+      <span class="sacola-icon">➕</span>
+      <span>Novo Orçamento</span>
+    </a>
+    <a routerLink="/orcamentos" routerLinkActive="active" class="sacola-link">
+      <span class="sacola-icon">💰</span>
+      <span>Gerenciar Orçamentos</span>
+    </a>
+    <a routerLink="/orcamento/taxa-entrega" routerLinkActive="active" class="sacola-link">
+      <span class="sacola-icon">🚚</span>
+      <span>Taxa de Entrega</span>
+    </a>
+    <a routerLink="/pedidos" routerLinkActive="active" class="sacola-link">
+      <span class="sacola-icon">🛒</span>
+      <span>Pedidos</span>
+    </a>
 
     <!-- Cadastros -->
     <div class="sacola-caption">CADASTROS</div>
-    <a href="/cadastros/clientes" class="sacola-link">
+    <a routerLink="/cadastros/clientes" routerLinkActive="active" class="sacola-link">
       <span class="sacola-icon">👥</span>
       <span>Clientes</span>
     </a>
-    <a href="/cadastros/funcionarios" class="sacola-link">
+    <a routerLink="/cadastros/funcionarios" routerLinkActive="active" class="sacola-link">
       <span class="sacola-icon">👔</span>
       <span>Funcionários</span>
     </a>
-    <a href="/cadastros/produtos" class="sacola-link">
+    <a routerLink="/cadastros/produtos" routerLinkActive="active" class="sacola-link">
       <span class="sacola-icon">📦</span>
       <span>Produtos</span>
     </a>
 
     <!-- Relatórios -->
     <div class="sacola-caption">RELATÓRIOS</div>
-    <a href="/relatorios/produtos" class="sacola-link">
+    <a routerLink="/relatorios/produtos" routerLinkActive="active" class="sacola-link">
       <span class="sacola-icon">📊</span>
       <span>Relatório de Produtos</span>
     </a>
-    <a href="/relatorios/pedidos" class="sacola-link">
+    <a routerLink="/relatorios/pedidos" routerLinkActive="active" class="sacola-link">
       <span class="sacola-icon">📈</span>
       <span>Relatório de Pedidos</span>
     </a>
-    <a href="/relatorios/clientes" class="sacola-link">
+    <a routerLink="/relatorios/clientes" routerLinkActive="active" class="sacola-link">
       <span class="sacola-icon">📉</span>
       <span>Relatório de Clientes</span>
     </a>
-
   </div>
 </div>

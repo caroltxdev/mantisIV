@@ -1,1 +1,209 @@
-<p>relatorio-pedidos works!</p>
+<div class="relatorio-container">
+  <div class="page-header">
+    <h1>📊 Relatório de Pedidos</h1>
+    <p class="subtitle">Análise e visualização de dados dos pedidos da Sacola Cheia</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros-section">
+    <h2>Filtros</h2>
+    <div class="filtros-grid">
+      <div class="filtro-item">
+        <label>Status:</label>
+        <select [(ngModel)]="filtroStatus" (change)="aplicarFiltros()" class="form-control">
+          <option value="">Todos</option>
+          <option *ngFor="let status of statusDisponibles" [value]="status">
+            {{ status | titlecase }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filtro-item">
+        <label>Cliente:</label>
+        <input 
+          type="text" 
+          [(ngModel)]="filtroCliente" 
+          (change)="aplicarFiltros()"
+          class="form-control"
+          placeholder="Buscar cliente..."
+        >
+      </div>
+
+      <div class="filtro-item">
+        <label>Forma de Pagamento:</label>
+        <select [(ngModel)]="filtroFormaPagamento" (change)="aplicarFiltros()" class="form-control">
+          <option value="">Todos</option>
+          <option *ngFor="let forma of formasPagamento" [value]="forma">
+            {{ forma | titlecase }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filtro-item">
+        <label>Data Início:</label>
+        <input 
+          type="date" 
+          [(ngModel)]="dataInicio" 
+          (change)="aplicarFiltros()"
+          class="form-control"
+        >
+      </div>
+
+      <div class="filtro-item">
+        <label>Data Fim:</label>
+        <input 
+          type="date" 
+          [(ngModel)]="dataFim" 
+          (change)="aplicarFiltros()"
+          class="form-control"
+        >
+      </div>
+
+      <div class="filtro-item">
+        <button (click)="limparFiltros()" class="btn-secondary">
+          ✕ Limpar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMO EXECUTIVO -->
+  <div class="resumo-section">
+    <h2>Resumo Executivo</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-content">
+          <h3>Total de Pedidos</h3>
+          <p class="card-value">{{ totalPedidos }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <h3>Total Faturado</h3>
+          <p class="card-value">{{ totalFaturado | currency: 'BRL' }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🏷️</div>
+        <div class="card-content">
+          <h3>Total Desconto</h3>
+          <p class="card-value">{{ totalDesconto | currency: 'BRL' }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-content">
+          <h3>Total Imposto</h3>
+          <p class="card-value">{{ totalImposto | currency: 'BRL' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRÁFICOS -->
+  <div class="graficos-section">
+    <div class="grafico-item">
+      <h3>Pedidos por Status</h3>
+      <div class="status-list">
+        <div *ngFor="let item of pedidosPorStatus" class="status-item">
+          <div class="status-info">
+            <span class="status-badge" [style.background]="obterCorStatus(item.status)">
+              {{ item.status | titlecase }}
+            </span>
+            <span class="status-detalhes">
+              {{ item.quantidade }} pedido(s) - {{ item.valor | currency: 'BRL' }}
+            </span>
+          </div>
+          <div class="status-barra">
+            <div class="barra" [style.width]="(item.quantidade / (pedidosPorStatus[0]?.quantidade || 1)) * 100 + '%'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grafico-item">
+      <h3>Formas de Pagamento</h3>
+      <div class="formas-list">
+        <div *ngFor="let forma of pedidosPorFormaPagamento" class="forma-item">
+          <span class="forma-label">{{ forma.formaPagamento | titlecase }}</span>
+          <span class="forma-valor">{{ forma.quantidade }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA -->
+  <div class="tabela-section">
+    <h2>Pedidos (Filtrados: {{ pedidosFiltrados.length }})</h2>
+
+    <div *ngIf="pedidosFiltrados.length === 0" class="empty-state">
+      <p>Nenhum pedido encontrado com os filtros aplicados.</p>
+    </div>
+
+    <table *ngIf="pedidosFiltrados.length > 0" class="table">
+      <thead>
+        <tr>
+          <th (click)="ordenarPorCampo('numeroOrcamento')" class="sortable">
+            Nº Orçamento {{ obterIconeOrdenacao('numeroOrcamento') }}
+          </th>
+          <th (click)="ordenarPorCampo('cliente')" class="sortable">
+            Cliente {{ obterIconeOrdenacao('cliente') }}
+          </th>
+          <th (click)="ordenarPorCampo('dataOrcamento')" class="sortable">
+            Data {{ obterIconeOrdenacao('dataOrcamento') }}
+          </th>
+          <th>Status</th>
+          <th>Forma Pagamento</th>
+          <th (click)="ordenarPorCampo('valorFinal')" class="sortable">
+            Total {{ obterIconeOrdenacao('valorFinal') }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pedido of pedidosPaginados">
+          <td>{{ pedido.numeroOrcamento }}</td>
+          <td>{{ pedido.cliente }}</td>
+          <td>{{ pedido.dataOrcamento | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <span class="badge" [style.background]="obterCorStatus(pedido.status)">
+              {{ pedido.status | titlecase }}
+            </span>
+          </td>
+          <td>{{ pedido.formaPagamento | titlecase }}</td>
+          <td>{{ pedido.valorFinal | currency: 'BRL' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- PAGINAÇÃO -->
+    <div *ngIf="totalPaginas > 1" class="paginacao">
+      <button 
+        (click)="paginaAnterior()" 
+        [disabled]="paginaAtual === 1"
+        class="btn-paginacao"
+      >
+        ← Anterior
+      </button>
+      <span class="pagina-info">Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+      <button 
+        (click)="proximaPagina()" 
+        [disabled]="paginaAtual === totalPaginas"
+        class="btn-paginacao"
+      >
+        Próxima →
+      </button>
+    </div>
+  </div>
+
+  <!-- EXPORTAR -->
+  <div class="export-section">
+    <button (click)="exportarCSV()" class="btn-export">
+      📥 Exportar para CSV
+    </button>
+  </div>
+</div>

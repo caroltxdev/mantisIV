@@ -1,1 +1,199 @@
-<p>relatorio-clientes works!</p>
+<!-- relatorio-clientes.component.html -->
+<div class="relatorio-container">
+  <div class="page-header">
+    <h1>📊 Relatório de Clientes</h1>
+    <p class="subtitle">Análise e visualização de dados dos clientes da Sacola Cheia</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros-section">
+    <h2>Filtros</h2>
+    <div class="filtros-grid">
+      <div class="filtro-item">
+        <label>Status do Cliente:</label>
+        <select [(ngModel)]="filtroAtivo" (change)="aplicarFiltros()" class="form-control">
+          <option [value]="null">Todos</option>
+          <option [value]="true">Ativos</option>
+          <option [value]="false">Inativos</option>
+        </select>
+      </div>
+
+      <div class="filtro-item">
+        <label>Estado:</label>
+        <input 
+          type="text" 
+          [(ngModel)]="filtroEstado" 
+          (change)="aplicarFiltros()"
+          class="form-control"
+          placeholder="Ex: SP, RJ..."
+        >
+      </div>
+
+      <div class="filtro-item">
+        <label>Cidade:</label>
+        <input 
+          type="text" 
+          [(ngModel)]="filtroCidade" 
+          (change)="aplicarFiltros()"
+          class="form-control"
+          placeholder="Ex: São Paulo..."
+        >
+      </div>
+
+      <div class="filtro-item">
+        <button (click)="limparFiltros()" class="btn-secondary">
+          ✕ Limpar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMO EXECUTIVO -->
+  <div class="resumo-section">
+    <h2>Resumo Executivo</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">👥</div>
+        <div class="card-content">
+          <h3>Total de Clientes</h3>
+          <p class="card-value">{{ totalClientes }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-content">
+          <h3>Clientes Ativos</h3>
+          <p class="card-value">{{ clientesAtivos }}</p>
+          <p class="card-percentage">{{ percentualAtivo }}%</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">⏸️</div>
+        <div class="card-content">
+          <h3>Clientes Inativos</h3>
+          <p class="card-value">{{ clientesInativos }}</p>
+          <p class="card-percentage">{{ percentualInativo }}%</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📍</div>
+        <div class="card-content">
+          <h3>Estados Diferentes</h3>
+          <p class="card-value">{{ estadosDiferentes }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRÁFICOS -->
+  <div class="graficos-section">
+    <div class="grafico-item">
+      <h3>Status dos Clientes</h3>
+      <div class="pie-container">
+        <div class="pie" [style.background]="gerarGradientePie()"></div>
+        <div class="pie-legend">
+          <div class="legend-item">
+            <span class="legend-color" style="background: #52c76b;"></span>
+            <span>Ativos: {{ clientesAtivos }}</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: #e0e0e0;"></span>
+            <span>Inativos: {{ clientesInativos }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grafico-item">
+      <h3>Clientes por Estado</h3>
+      <div class="grafico-barras">
+        <div *ngFor="let estado of estadosAgrupados" class="barra-item">
+          <div class="barra-label">{{ estado.estado }}</div>
+          <div class="barra-container">
+            <div class="barra" [style.width]="(estado.quantidade / maxClientes) * 100 + '%'"></div>
+          </div>
+          <div class="barra-valor">{{ estado.quantidade }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA -->
+  <div class="tabela-section">
+    <h2>Clientes (Filtrados: {{ clientesFiltrados.length }})</h2>
+
+    <div *ngIf="clientesFiltrados.length === 0" class="empty-state">
+      <p>Nenhum cliente encontrado com os filtros aplicados.</p>
+    </div>
+
+    <table *ngIf="clientesFiltrados.length > 0" class="table">
+      <thead>
+        <tr>
+          <th (click)="ordenarPorCampo('nome')" class="sortable">
+            Nome {{ obterIconeOrdenacao('nome') }}
+          </th>
+          <th (click)="ordenarPorCampo('cnpjCpf')" class="sortable">
+            CNPJ/CPF {{ obterIconeOrdenacao('cnpjCpf') }}
+          </th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th (click)="ordenarPorCampo('estado')" class="sortable">
+            Estado {{ obterIconeOrdenacao('estado') }}
+          </th>
+          <th>Cidade</th>
+          <th (click)="ordenarPorCampo('ativo')" class="sortable">
+            Status {{ obterIconeOrdenacao('ativo') }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of clientesPaginados">
+          <td>{{ cliente.nome }}</td>
+          <td>{{ cliente.cnpjCpf }}</td>
+          <td>{{ cliente.email || '-' }}</td>
+          <td>{{ cliente.telefone || '-' }}</td>
+          <td>{{ cliente.estado || '-' }}</td>
+          <td>{{ cliente.cidade || '-' }}</td>
+          <td>
+            <span class="badge" [ngClass]="cliente.ativo ? 'active' : 'inactive'">
+              {{ cliente.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- PAGINAÇÃO -->
+    <div *ngIf="totalPaginas > 1" class="paginacao">
+      <button 
+        (click)="paginaAnterior()" 
+        [disabled]="paginaAtual === 1"
+        class="btn-paginacao"
+      >
+        ← Anterior
+      </button>
+      
+      <span class="pagina-info">
+        Página {{ paginaAtual }} de {{ totalPaginas }}
+      </span>
+      
+      <button 
+        (click)="proximaPagina()" 
+        [disabled]="paginaAtual === totalPaginas"
+        class="btn-paginacao"
+      >
+        Próxima →
+      </button>
+    </div>
+  </div>
+
+  <!-- EXPORTAR -->
+  <div class="export-section">
+    <button (click)="exportarCSV()" class="btn-export">
+      📥 Exportar para CSV
+    </button>
+  </div>
+</div>

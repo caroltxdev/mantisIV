@@ -1,1 +1,191 @@
-<p>relatorio-produtos works!</p>
+<div class="relatorio-container">
+  <div class="page-header">
+    <h1>📊 Relatório de Produtos</h1>
+    <p class="subtitle">Análise e visualização de dados dos produtos da Sacola Cheia</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros-section">
+    <h2>Filtros</h2>
+    <div class="filtros-grid">
+      <div class="filtro-item">
+        <label>Status:</label>
+        <select [(ngModel)]="filtroAtivo" (change)="aplicarFiltros()" class="form-control">
+          <option [value]="null">Todos</option>
+          <option [value]="true">Ativos</option>
+          <option [value]="false">Inativos</option>
+        </select>
+      </div>
+
+      <div class="filtro-item">
+        <label>Categoria:</label>
+        <input 
+          type="text" 
+          [(ngModel)]="filtroCategoria" 
+          (change)="aplicarFiltros()"
+          class="form-control"
+          placeholder="Ex: Frutas, Verduras..."
+        >
+      </div>
+
+      <div class="filtro-item">
+        <label>Estoque:</label>
+        <select [(ngModel)]="filtroEstoque" (change)="aplicarFiltros()" class="form-control">
+          <option value="todos">Todos</option>
+          <option value="baixo">Baixo Estoque</option>
+          <option value="otimo">Estoque Ótimo</option>
+        </select>
+      </div>
+
+      <div class="filtro-item">
+        <button (click)="limparFiltros()" class="btn-secondary">
+          ✕ Limpar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMO EXECUTIVO -->
+  <div class="resumo-section">
+    <h2>Resumo Executivo</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-content">
+          <h3>Total de Produtos</h3>
+          <p class="card-value">{{ totalProdutos }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-content">
+          <h3>Produtos Ativos</h3>
+          <p class="card-value">{{ produtosAtivos }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">⚠️</div>
+        <div class="card-content">
+          <h3>Baixo Estoque</h3>
+          <p class="card-value">{{ produtosBaixoEstoque }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <h3>Valor Total Estoque</h3>
+          <p class="card-value">{{ valorTotalEstoque | currency: 'BRL' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRÁFICOS -->
+  <div class="graficos-section">
+    <div class="grafico-item">
+      <h3>Produtos por Categoria</h3>
+      <div class="grafico-barras">
+        <div *ngFor="let cat of categoriasAgrupadas" class="barra-item">
+          <div class="barra-label">{{ cat.categoria }}</div>
+          <div class="barra-container">
+            <div class="barra" [style.width]="(cat.quantidade / (categoriasAgrupadas[0]?.quantidade || 1)) * 100 + '%'"></div>
+          </div>
+          <div class="barra-valor">{{ cat.quantidade }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grafico-item">
+      <h3>Status dos Produtos</h3>
+      <div class="status-grid">
+        <div class="status-card">
+          <span class="status-numero">{{ produtosAtivos }}</span>
+          <span class="status-label">Ativos</span>
+        </div>
+        <div class="status-card alerta">
+          <span class="status-numero">{{ produtosInativos }}</span>
+          <span class="status-label">Inativos</span>
+        </div>
+        <div class="status-card warning">
+          <span class="status-numero">{{ produtosBaixoEstoque }}</span>
+          <span class="status-label">Baixo Estoque</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA -->
+  <div class="tabela-section">
+    <h2>Produtos (Filtrados: {{ produtosFiltrados.length }})</h2>
+
+    <div *ngIf="produtosFiltrados.length === 0" class="empty-state">
+      <p>Nenhum produto encontrado com os filtros aplicados.</p>
+    </div>
+
+    <table *ngIf="produtosFiltrados.length > 0" class="table">
+      <thead>
+        <tr>
+          <th (click)="ordenarPorCampo('nome')" class="sortable">
+            Nome {{ obterIconeOrdenacao('nome') }}
+          </th>
+          <th>Categoria</th>
+          <th>Unidade</th>
+          <th (click)="ordenarPorCampo('precoUnitario')" class="sortable">
+            Preço {{ obterIconeOrdenacao('precoUnitario') }}
+          </th>
+          <th (click)="ordenarPorCampo('estoque')" class="sortable">
+            Estoque {{ obterIconeOrdenacao('estoque') }}
+          </th>
+          <th>Mín.</th>
+          <th>Valor Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produto of produtosPaginados" [ngClass]="{ 'alerta-estoque': produto.estoque < produto.estoqueMinimo }">
+          <td>{{ produto.nome }}</td>
+          <td>{{ produto.categoria }}</td>
+          <td>{{ produto.unidade }}</td>
+          <td>{{ produto.precoUnitario | currency: 'BRL' }}</td>
+          <td>{{ produto.estoque }}</td>
+          <td>{{ produto.estoqueMinimo }}</td>
+          <td>{{ (produto.estoque * produto.precoUnitario) | currency: 'BRL' }}</td>
+          <td>
+            <span class="badge" [ngClass]="produto.ativo ? 'active' : 'inactive'">
+              {{ produto.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- PAGINAÇÃO -->
+    <div *ngIf="totalPaginas > 1" class="paginacao">
+      <button 
+        (click)="paginaAnterior()" 
+        [disabled]="paginaAtual === 1"
+        class="btn-paginacao"
+      >
+        ← Anterior
+      </button>
+      <span class="pagina-info">Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+      <button 
+        (click)="proximaPagina()" 
+        [disabled]="paginaAtual === totalPaginas"
+        class="btn-paginacao"
+      >
+        Próxima →
+      </button>
+    </div>
+  </div>
+
+  <!-- EXPORTAR -->
+  <div class="export-section">
+    <button (click)="exportarCSV()" class="btn-export">
+      📥 Exportar para CSV
+    </button>
+  </div>
+</div>
